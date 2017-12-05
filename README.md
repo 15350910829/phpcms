@@ -1,5 +1,6 @@
 # phpcms
 ### phpcms的手机站
+- 在后台 开启 手机门户  模块下有  然后绑定移动端域名（还要绑定栏目）  修改 template/default/wap  模板这个是手机站 的模板   这样就实现了pc与移动端同步数据
 - 首先给phpcms添加自适配的代码，找到并打开/modules/content/index.php文件，在里面找到如下代码：include template('content',$template);
 - 将其修改为：if(substr($_SERVER['SERVER_NAME'], 0,1) == 'm'){
 	 include template('content_m',$template);

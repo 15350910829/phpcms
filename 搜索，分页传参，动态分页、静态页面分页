@@ -1,0 +1,226 @@
+1、搜索
+<?php 
+$fengge=isset($_GET['fengge']) ? $_GET['fengge'] : '';
+$hit=isset($_GET['hit']) ? $_GET['hit'] : '';
+$tijiao=isset($_GET['tijiao']) ? $_GET['tijiao'] : '';
+$time=isset($_GET['time']) ? $_GET['time'] : '';
+$page=isset($_GET['page']) ? $_GET['page'] : '';
+
+
+
+
+
+
+
+                $array=array(
+                    'xiandai'=>'现代风格',
+                    'zhongshi'=>"中式风格",
+                    'oumei'=>"欧式风格",
+                    'tianyuan'=>'田园风格',
+                    'hunda'=>"混搭风格",
+                );
+
+$urls='/index.php?m=content&c=index&a=lists&catid='.$catid;
+?>
+ 
+<div class="case-frock">
+  <div class="container">
+    <div class="case-frock-style"><a href="{$urls}" {if !$fengge}class="active"{/if} > 全部</a>
+    {loop $array $key $r}
+    <a  href="{$urls}&fengge={$key}&page={$page}"  {if $fengge==$key}class="active"{/if} >{$r}</a>
+    {/loop}
+    
+
+    </div>
+ 
+     <?php 
+     if($fengge){
+     ?> 
+              <?php
+              if(empty($time) && empty($hit) && empty($tijiao) )
+              {
+              
+              ?>
+            {pc:get sql="select count(*) as num,e.*,d.fengge from v9_jiazhuanganli as e left join v9_jiazhuanganli_data as d on  e.id=d.id  where d.fengge='$fengge' order by inputtime desc"  cache="36000"  wj_page="$page"  return="num" }
+            {php $num=$num[0][num];}
+            {/pc}
+
+              {pc:get sql="select e.*,d.fengge from v9_jiazhuanganli as e left join v9_jiazhuanganli_data as d on  e.id=d.id  where d.fengge='$fengge' order by inputtime desc"  cache="36000" num="9" wj_page="$page"  return="data" }
+              
+              <?php
+              }elseif($time){	
+              ?>
+              {pc:get sql="select count(*) as num,e.*,d.fengge from v9_jiazhuanganli as e left join v9_jiazhuanganli_data as d  on e.id=d.id  where  fengge='$fengge' order by inputtime desc"  cache="36000"  wj_page="$page"  return="num"}
+               {php $num=$num[0][num];}
+              {/pc}
+              {pc:get sql="select e.*,d.fengge from v9_jiazhuanganli as e left join v9_jiazhuanganli_data as d  on e.id=d.id  where  fengge='$fengge' order by inputtime desc"  cache="36000" num="9" wj_page="$page"  return="data"}
+             
+              <?php
+              }elseif($hit){
+              ?>
+           {pc:get sql="select count(*) as num,e.*,d.fengge from v9_jiazhuanganli as e left join v9_jiazhuanganli_data as d on e.id=d.id left join v9_hits as h on e.id=substring(h.hitsid,5)-0  where fengge='$fengge' order by h.views"  cache="36000"  wj_page="$_GET[page]"  return="num"}
+               {php $num=$num[0][num];}
+           {/pc}
+           {pc:get sql="select e.*,d.fengge from v9_jiazhuanganli as e left join v9_jiazhuanganli_data as d on e.id=d.id left join v9_hits as h on e.id=substring(h.hitsid,5)-0  where fengge='$fengge' order by h.views"  cache="36000" num="9" wj_page="$_GET[page]"  return="data"}
+              <?php
+              }else{
+              ?>
+                {pc:get sql="select count(*) as num,e.*,d.fengge from v9_jiazhuanganli as e left join v9_jiazhuanganli_data as d  on e.id=d.id   where title like '%$tijiao%' and fengge='$fengge' order by inputtime desc"  cache="36000"  wj_page="$page"  return="num"}
+                 {php $num=$num[0][num];}
+
+                {/pc}
+                {pc:get sql="select e.*,d.fengge from v9_jiazhuanganli as e left join v9_jiazhuanganli_data as d  on e.id=d.id   where title like '%$tijiao%' and fengge='$fengge' order by inputtime desc"  cache="36000" num="9" wj_page="$page"  return="data"}
+                
+              <?php
+              }
+              ?>
+     <?php
+     }else{
+     ?>
+              <?php
+              if(empty($time) && empty($hit) && empty($tijiao))
+              {
+              ?>
+              {pc:get sql="select count(*) as num,e.*,d.fengge from v9_jiazhuanganli as e left join v9_jiazhuanganli_data as d on e.id=d.id order by inputtime desc"  cache="36000"  wj_page="$page"  return="num" }
+               {php $num=$num[0][num];}
+              {/pc}
+
+              {pc:get sql="select e.*,d.fengge from v9_jiazhuanganli as e left join v9_jiazhuanganli_data as d on e.id=d.id order by inputtime desc"  cache="36000" num="9" wj_page="$page"  return="data" }
+              
+              <?php
+              }elseif($time){
+              ?>
+              {pc:get sql="select count(*) as num,e.*,d.fengge from v9_jiazhuanganli as e left join v9_jiazhuanganli_data as d on e.id=d.id order by inputtime desc"  cache="36000"  wj_page="$page"  return="num" }
+                {php $num=$num[0][num];}
+              {/pc}
+              {pc:get sql="select e.*,d.fengge from v9_jiazhuanganli as e left join v9_jiazhuanganli_data as d on e.id=d.id order by inputtime desc"  cache="36000" num="9" wj_page="$page"  return="data" }
+              <?php
+              }elseif($hit){
+              ?>
+                {pc:get sql="select count(*) as num,e.*,d.fengge from v9_jiazhuanganli as e left join v9_jiazhuanganli_data as d on e.id=d.id left join v9_hits as h on e.id=substring(h.hitsid,5)-0   order by h.views"  cache="36000" wj_page="$_GET[page]"  return="num"}
+                      {php $num=$num[0][num];}
+                {/pc}
+                  {pc:get sql="select e.*,d.fengge from v9_jiazhuanganli as e left join v9_jiazhuanganli_data as d on e.id=d.id left join v9_hits as h on e.id=substring(h.hitsid,5)-0   order by h.views"  cache="36000" num="9" wj_page="$_GET[page]"  return="data"}
+                }
+                  
+              <?php
+              }else{
+              ?>
+
+               {pc:get sql="select count(*) as num,e.*,d.fengge from v9_jiazhuanganli as e left join v9_jiazhuanganli_data as d on e.id=d.id where title like '%$tijiao%' order by inputtime desc"  cache="36000" wj_page="$page"  return="num" }
+               {php $num=$num[0][num];}
+               {/pc}
+              {pc:get sql="select e.*,d.fengge from v9_jiazhuanganli as e left join v9_jiazhuanganli_data as d on e.id=d.id where title like '%$tijiao%' order by inputtime desc"  cache="36000" num="9" wj_page="$page"  return="data" }
+                
+              <?php
+              }
+              ?>
+
+ 
+     <?php
+     }
+     ?>
+    <div class="case-frock-filter clearfix">
+      <div class="pull-left">
+        <a class="pull-left hot" href="{$urls}&fengge={$fengge}&inp={$inp}&time=1">最新</a>
+        <a class="pull-left new" href="{$urls}&fengge={$fengge}&inp={$inp}&hit=1">最热</a>
+      
+        <div class="pull-left">
+        <form action="{$urls}&inp={$inp}&tijiao=1" method="get">
+             <input type="hidden" name="m" value="content">
+             <input type="hidden" name="c" value="index">
+             <input type="hidden" name="a" value="lists">
+             <input type="hidden" name="catid" value="{$catid}">
+             <input type="hidden" name="fengge" value="{$fengge}">
+            <div class="pull-left search-input">
+            <input name="tijiao" type="text" placeholder="输入案例名称、楼盘名称"></div>
+            <div class="pull-left search-btn"><input class="btn" type="submit"></div>
+          </form>
+        </div>
+        
+      </div>
+      <div class="pull-right case-frock-allProduct">共<?php $num=empty($num)? '0' :  $num; echo $num; ?>套工程案例</div>
+    </div>
+    <div class="row case-frock-list">
+
+  
+     
+      {loop $data $r}
+   
+      <div class="col-md-4 list">
+        <div class="list-cont" href="{$r[url]}">
+          <img class="" src="{$r[thumb]}" alt=""/>
+          <div class="case-frock-list-hover">
+           <div class="img"> <a href="{$r[url]}"><img src="{$r[erweima]}" alt=""></a></div>
+            <div class="tit">{$r[title]}</div>
+          </div>
+        </div>
+      </div>
+    {/loop}
+
+    </div>
+      {/pc}
+  </div>
+</div>
+
+<div class="mulanqing-paging">
+  <div class="container">
+   {$wj_pages}
+  </div>
+</div>
+
+2、分页 感谢http://www.abcde.cn/info/show-23-997-1.html
+静态分页：libs/global.function.php
+自定义一份分页函数，修改/phpcms/libs/classes/tmplate_cache.class.php的$str.=这行修改
+   $str .= '$pages = pages($'.$op.'_total, $page, $pagesize, $urlrule);'; 
+动态分页：还需要修改大约176行,增加一份
+$str .= '$r = $get_db->sql_query("'.$sql.'");$s = $get_db->fetch_next();$pages=pages($s[\'count\'], $page, $pagesize, $urlrule);';
+
+3、分页传参
+在全局函数的分页中的pageurl方法里面：
+例如：return $url.'&fengge='.$_GET[fengge].'&time='.$_GET[time].'&hit='.$_GET[hit].'&tijiao='.$_GET[tijiao];
+
+4、前台模板中的验证码调用
+<?php pc_base::load_sys_class('form', '', 0);  ?>
+<label for="code">验证码</label>
+<input type="text" id="code" name="code" size="10">
+{form::checkcode('code_img', '4', '14', 100, 30)}
+
+然后module/content/index.php的相应位置验证
+    if(isset($_POST['dosubmit'])){ //提交数据
+        //启动session
+        $session_storage = 'session_'.pc_base::load_config('system','session_storage');
+        pc_base::load_sys_class($session_storage);
+        //验证码
+        if (($_SESSION['code'] != strtolower($_POST['code'])) || empty($_SESSION['code'])) {
+        showmessage("验证码错误");
+        } else {
+        $_SESSION['code'] = '';
+        }           
+5、在验证码判断后我们想直接返回上个页面并带有参数的方式
+例如：在extetion.func.php 文件中自定义个函数
+<?php
+/**
+ *  extention.func.php 用户自定义函数库
+ *
+ * @copyright			(C) 2005-2010 PHPCMS
+ * @license				http://www.phpcms.cn/license/
+ * @lastmodify			2010-10-27
+ */
+ function fanhui(){
+ 	  $t='验证码错误';
+ 	  echo "<script>window.location.href='\/index.php?m=content&c=index&a=lists&catid=15&t=$t'</script>"; 
+
+}
+?>
+
+6.三表联查
+例如：
+select e.*,d.fengge from v9_jiazhuanganli as e left join v9_jiazhuanganli_data as d on e.id=d.id left join v9_hits as h on e.id=substring(h.hitsid,5)-0 where  fengge='oumei'  order by h.views
+
+
+
+
+
+
+

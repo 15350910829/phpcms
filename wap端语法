@@ -1,0 +1,38 @@
+   1、遍历子栏目
+   {php $num=1}
+      {loop subtype(2) $cc}
+        {if $num < 5}
+          {if $num==1}{$cc[typename]} {else}、{$cc[typename]} {/if}
+        {/if} 
+        {php $num++}
+      {/loop}
+      
+   2、列表页连接
+   {list_url(38)}
+   
+   3、某个栏目名
+   {$TYPE[1][typename]}
+   
+   4、内容遍历
+   				{pc:wap action="lists" typeid="43" num="5" order="listorder desc" return="info"}
+				{loop $info $r}
+				<div class="swiper-slide">
+				   <div class="content-slide">
+					<p class="title"><a href="{show_url($r[catid],$r[id],43)}">{$r[title]}</a></p>
+					<p><a href="{show_url($r[catid],$r[id],43)}" ><img class="tutu" src="{thumb($r[thumb],180,190,0)}" width="90" height="95" alt="{$r[title]}"/></a>{str_cut($r[description],90)} <a href="{show_url($r[catid],$r[id],43)}">详细>></a></p>
+				  </div> 
+				 </div>
+				 {/loop}
+				 {/pc}
+         
+         
+5、默认栏目下的内容
+{loop $list $v}
+	  <div class="er_n_list">
+		 <a class="er_n_a" href="{show_url($v[catid],$v[id],$typeid)}">{$v[title]}</a>
+		 <dl>
+			  <dt><a href="{show_url($v[catid],$v[id],$typeid)}"><img class="tutu" src="{thumb($v[thumb],180,0,0)}"/></a></dt>
+			  <dd>{str_cut($v[description],120,'...')}</dd>
+		 </dl>
+	  </div>
+	{/loop}

@@ -218,8 +218,15 @@ $str .= '$r = $get_db->sql_query("'.$sql.'");$s = $get_db->fetch_next();$pages=p
 例如：
 select e.*,d.fengge from v9_jiazhuanganli as e left join v9_jiazhuanganli_data as d on e.id=d.id left join v9_hits as h on e.id=substring(h.hitsid,5)-0 where  fengge='oumei'  order by h.views
 
+7、调用栏目图片
 
-
+phpcms调用最高父级栏目图片：{$CATEGORYS[$top_parentid][image]}
+phpcms调用直接父级栏目图片：{$CATEGORYS[$parentid][image]}
+phpcms调用当前栏目图片：{$CATEGORYS[$catid][image]}
+phpcms调用指定id的栏目图片：{$CATEGORYS[78][image]}
+假如二级栏目没有设置图片，那么默认调用父级栏目的图片.
+{if $image}<img src="{$CATEGORYS[$catid][image]}" width="994" height="229" style="border:0px;">
+{else}<img src="{$CATEGORYS[$top_parentid][image]}" width="994" height="229" style="border:0px;">{/if}
 
 
 
